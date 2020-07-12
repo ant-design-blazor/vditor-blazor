@@ -8,13 +8,15 @@ namespace Vditor
     {
         [Inject] private IJSRuntime JS { get; set; }
 
+        private ElementReference Ref;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
 
             if (firstRender)
             {
-                await JS.InvokeVoidAsync("vditorScript");
+                await JS.InvokeVoidAsync("createVditor", Ref);
             }
         }
     }
