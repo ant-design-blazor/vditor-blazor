@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Compile Remove="Shared\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Shared\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Shared\**" />
+    <None Remove="Data\**" />
+    <None Remove="Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vditor.Docs\Vditor.Docs.csproj" />
+  </ItemGroup>
+
+</Project>
