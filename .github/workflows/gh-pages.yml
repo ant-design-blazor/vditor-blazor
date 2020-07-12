@@ -43,7 +43,7 @@ jobs:
       - name: Package Nightly Nuget 📦
         run: |
           SUFFIX=`date "+%y%m%d%H%M%S"`
-          dotnet pack src/Vditor.csproj /p:PackageVersion=$Version-nightly-${SUFFIX} -c Release -o publish --no-build --no-restore
+          dotnet pack src/Vditor/Vditor.csproj /p:PackageVersion=$Version-nightly-${SUFFIX} -c Release -o publish --no-build --no-restore
 
       - name: Publish to Nuget ✔
         run: |
