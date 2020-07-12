@@ -1,0 +1,65 @@
+﻿name: Publish Docs
+
+env:
+  Version: 0.1.0
+  NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'ant-design-blazor'
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.300
+
+      - name: Publish Docs 🎉
+        run: |
+          cd ./src/Vditor.Docs.WebAssembly/wwwroot
+          cp -rf gh-pages/* gh-pages/.nojekyll gh-pages/.spa ./
+          cd ../../../
+          dotnet build
+          dotnet publish -c Release -o cargo
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: cargo/wwwroot
+
+      - name: Package Nightly Nuget 📦
+        run: |
+          SUFFIX=`date "+%y%m%d%H%M%S"`
+          dotnet pack src/Vditor.csproj /p:PackageVersion=$Version-nightly-${SUFFIX} -c Release -o publish --no-build --no-restore
+
+      - name: Publish to Nuget ✔
+        run: |
+          dotnet nuget push publish/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY --skip-duplicate
+
+      - name: Sync to Gitee 💕
+        uses: wearerequired/git-mirror-action@master
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+        with:
+          source-repo: "git@github.com:ant-design-blazor/vditor-blazor.git"
+          destination-repo: "git@gitee.com:ant-design-blazor/vditor-blazor.git"
+
+      - name: Reload Gitee Pages 😆
+        uses: mizuka-wu/gitee-pages-action@v1.0.0
+        with:
+          repository: ant-design-blazor/vditor-blazor
+          cookie: ${{ secrets.GITEE_COOKIE }}
+          branch: gh-pages

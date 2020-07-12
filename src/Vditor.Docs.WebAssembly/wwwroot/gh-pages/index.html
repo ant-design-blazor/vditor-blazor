@@ -1,11 +1,12 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
     <title>Vditor of Blazor</title>
-    <base href="/" />
+    <base href="/vditor-blazor/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
@@ -15,11 +16,12 @@
 <body>
     <app>Loading...</app>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
     <!-- ⚠️Please specify the version number in the production environment, such as https://cdn.jsdelivr.net/npm/vditor@x.x.x/dist... -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
     <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js" defer></script>
     <script src="_content/Vditor/vditor-blazor.js"></script>
+
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
 </html>
