@@ -15,11 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vditor.Docs\Vditor.Docs.csproj" />
-    <ProjectReference Include="..\Vditor\Charts.csproj" />
+    <ProjectReference Include="..\Vditor\Vditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
-
 </Project>

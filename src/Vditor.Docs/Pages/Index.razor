@@ -4,6 +4,13 @@
 
 Vditor of blazor.
 
-<Vditor.Editor />
+<Vditor.Editor @bind-Value="value" />
 
-<Vditor.Editor />
+<Vditor.Editor @bind-Value="value" />
+
+Content:@value
+
+
+<button @onclick="()=>{ value = DateTime.Now.ToString(); }">Change Value</button>
+
+@code{ string value; }
