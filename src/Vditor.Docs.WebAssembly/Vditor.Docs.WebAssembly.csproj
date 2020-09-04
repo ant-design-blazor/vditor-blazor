@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vditor.Docs\Vditor.Docs.csproj" />
-    <ProjectReference Include="..\Vditor\Vditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

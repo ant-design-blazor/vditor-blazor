@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using Microsoft.JSInterop;
+using System.Collections.Generic;
+using System;
 
 namespace Vditor
 {
-    public partial class Editor : ComponentBase
+    public partial class Editor : ComponentBase, IDisposable
     {
         /// <summary>
         /// Markdown Content
@@ -33,12 +34,34 @@ namespace Vditor
 
         [Parameter] public EventCallback<string> HtmlChanged { get; set; }
 
-        [Inject] private EditorService EditorService { get; set; }
+        [Parameter(CaptureUnmatchedValues = true)]
+        public Dictionary<string, object> Options { get; set; }
+
+        [Parameter]
+        public string Mode { get; set; }
+
+        [Parameter]
+        public string Placeholder { get; set; }
+
+        [Parameter]
+        public string Height { get; set; }
+
+        [Parameter]
+        public string Width { get; set; }
+
+        [Parameter]
+        public string MinHeight { get; set; }
+
+        [Parameter]
+        public bool Outline { get; set; }
 
         private ElementReference _ref;
 
+        private bool _editorRendered = false;
         private bool _wattingUpdate = false;
         private string _value;
+
+        private bool _afterFirstRender = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -46,19 +69,8 @@ namespace Vditor
 
             if (firstRender)
             {
-                await EditorService.CreateVditor(_ref, this);
-            }
-        }
-
-        [JSInvokable]
-        public void OnInput(string value)
-        {
-            _value = value;
-            _wattingUpdate = false;
-
-            if (ValueChanged.HasDelegate)
-            {
-                ValueChanged.InvokeAsync(value);
+                _afterFirstRender = true;
+                await CreateVditor();
             }
         }
 
@@ -66,20 +78,39 @@ namespace Vditor
         {
             await base.OnInitializedAsync();
 
-            if (Value != null)
-            {
-                await EditorService.SetValue(_ref, Value);
-            }
+            Options ??= new Dictionary<string, object>();
+
+            Options["Mode"] = Mode ?? "ir";
+            Options["Placeholder"] = Placeholder ?? "";
+            Options["Height"] = int.TryParse(Height, out var h) ? h : (object)Height;
+            Options["Width"] = int.TryParse(Width, out var w) ? w : (object)Width;
+            Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
+            Options["Options"] = Outline;
         }
 
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
-            if (_wattingUpdate)
+            if (_wattingUpdate && _editorRendered)
             {
-                await EditorService.SetValue(_ref, _value);
                 _wattingUpdate = false;
+                await SetValue(_value, true);
             }
+        }
+
+        public async ValueTask<string> GetValueAsync()
+        {
+            if (_editorRendered)
+            {
+                return await GetValue();
+            }
+
+            return string.Empty;
+        }
+
+        public void Dispose()
+        {
+            Destroy();
         }
     }
 }

@@ -4,13 +4,27 @@
 
 Vditor of blazor.
 
-<Vditor.Editor @bind-Value="value" />
+<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" />
 
-<Vditor.Editor @bind-Value="value" />
+<br />
+Html: @((MarkupString)html)
+<br />
 
 Content:@value
 
-
+<br />
+<br />
 <button @onclick="()=>{ value = DateTime.Now.ToString(); }">Change Value</button>
+<button @onclick="Click">Get Value</button>
+@code{
+    string value = "Hello Blazor!";
+    string html;
 
-@code{ string value; }
+    Editor editor;
+
+    async Task Click()
+    {
+        var value = await editor.GetValueAsync();
+        Console.WriteLine(value);
+    }
+}

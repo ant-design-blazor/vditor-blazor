@@ -21,7 +21,6 @@ namespace Vditor.Docs.Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddVditor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
