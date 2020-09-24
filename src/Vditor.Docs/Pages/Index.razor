@@ -7,7 +7,7 @@ Vditor of blazor.
 <Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" />
 
 <br />
-Html: @((MarkupString)html)
+<Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd"/>
 <br />
 
 Content:@value
@@ -26,5 +26,10 @@ Content:@value
     {
         var value = await editor.GetValueAsync();
         Console.WriteLine(value);
+    }
+
+    void Rendererd()
+    {
+        Console.WriteLine("rendererd!");
     }
 }
