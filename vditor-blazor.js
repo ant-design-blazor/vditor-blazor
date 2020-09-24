@@ -5,7 +5,6 @@ window.vditorBlazor = window.vditorBlazor || {
   createVditor: (domRef, editor, value, options = {}) => {
     options = convertJsonKey(options);
 
-    console.log(options);
     domRef.Vditor = new Vditor(domRef, {
       ...options,
       theme: 'ant-design',
@@ -51,6 +50,17 @@ window.vditorBlazor = window.vditorBlazor || {
   },
   destroy: (domRef) => {
     domRef.Vditor.destroy();
+  },
+  preview: (domRef, editor, markdown, options = {}) => {
+    options = convertJsonKey(options);
+    Vditor.preview(domRef, markdown, {
+      ...options,
+      after() {
+        if (options.handleAfter) {
+          editor.invokeMethodAsync('HandleAfter');
+        }
+      }
+    });
   }
 }
 
@@ -58,6 +68,9 @@ var convertJsonKey = function (jsonObj) {
   var result = {};
   for (key in jsonObj) {
     var keyval = jsonObj[key];
+    if (keyval == null) {
+      continue;
+    }
     key = key.replace(key[0], key[0].toLowerCase());
     result[key] = keyval;
   }
