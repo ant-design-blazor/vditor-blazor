@@ -64,6 +64,15 @@ window.vditorBlazor = window.vditorBlazor || {
   }
 }
 
+var editorObj = null;
+var setEditor = function (editor) {
+    editorObj = editor;
+}
+
+var ClickCustomToolbar = function (name) {
+    editorObj.invokeMethodAsync("HandleClickCustomToolbar", name)
+}
+
 var convertJsonKey = function (jsonObj) {
   var result = {};
   for (key in jsonObj) {
@@ -71,7 +80,20 @@ var convertJsonKey = function (jsonObj) {
     if (keyval == null) {
       continue;
     }
-    key = key.replace(key[0], key[0].toLowerCase());
+      key = key.replace(key[0], key[0].toLowerCase());
+
+      if (typeof (keyval) == "object") {
+          var data = JSON.stringify(keyval);
+          var json = JSON.parse(data, function (k, v) {
+              if (v.indexOf && v.indexOf('function') > -1) {
+                  return eval("(function(){return " + v + "})()")
+              }
+              return v;
+          });
+          keyval = json
+          console.log(typeof (keyval), data)
+      }
+
     result[key] = keyval;
   }
   return result;

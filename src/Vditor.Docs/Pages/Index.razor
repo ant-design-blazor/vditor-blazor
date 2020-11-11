@@ -1,13 +1,15 @@
 ﻿@page "/"
 
+@using Vditor.Models
+
 <h1>Vditor Blazor</h1>
 
 Vditor of blazor.
 
-<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" />
+<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnClickCustomToolbar="OnClickCustomToolbar" />
 
 <br />
-<Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd"/>
+<Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd" />
 <br />
 
 Content:@value
@@ -21,6 +23,58 @@ Content:@value
     string html;
 
     Editor editor;
+    Toolbar Toolbar = new Toolbar();
+
+    protected override void OnInitialized()
+    {
+
+        string[] keys = { "emoji",
+            "headings",
+            "bold",
+            "italic",
+            "strike",
+            "link",
+            "|",
+            "list",
+            "ordered-list",
+            "check",
+            "outdent",
+            "indent",
+            "|",
+            "quote",
+            "line",
+            "code",
+            "inline-code",
+            "insert-before",
+            "insert-after",
+            "|"};
+
+        Toolbar.Toolbars.AddRange(keys.ToList());
+
+        CustomToolbar toolbar = new CustomToolbar()
+        {
+            ClassName = "right",
+            Hotkey = "⌘-⇧-S",
+            Icon = "<svg><use xlink:href=\"#vditor-icon-export\"></use></svg>",
+            Name = "sponsor",
+            Tip = "自定义Toolbar",
+            TipPosition = "n"
+        };
+
+        Toolbar.Toolbars.Add(toolbar);
+
+        string[] keys2 = {"upload",
+            "record",
+            "table",
+            "|",
+            "undo",
+            "redo",
+            "|",
+            "fullscreen"};
+        Toolbar.Toolbars.AddRange(keys2.ToList());
+
+        base.OnInitialized();
+    }
 
     async Task Click()
     {
@@ -31,5 +85,10 @@ Content:@value
     void Rendererd()
     {
         Console.WriteLine("rendererd!");
+    }
+
+    void OnClickCustomToolbar(string name)
+    {
+        value = value + "自定义按钮name:" + name;
     }
 }

@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Vditor.Models;
+using System.Linq;
 
 namespace Vditor
 {
@@ -55,6 +57,9 @@ namespace Vditor
         [Parameter]
         public bool Outline { get; set; }
 
+        [Parameter]
+        public Toolbar Toolbar { get; set; }
+
         private ElementReference _ref;
 
         private bool _editorRendered = false;
@@ -71,6 +76,7 @@ namespace Vditor
             {
                 _afterFirstRender = true;
                 await CreateVditor();
+                await SetEditor();
             }
         }
 
@@ -86,6 +92,36 @@ namespace Vditor
             Options["Width"] = int.TryParse(Width, out var w) ? w : (object)Width;
             Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
             Options["Options"] = Outline;
+
+            if (Toolbar != null)
+            {
+                List<object> bars = new List<object>();
+                foreach(var item in Toolbar.Toolbars)
+                {
+                    if(item.GetType() == typeof(string))
+                    {
+                        bars.Add(item);
+                    }
+                    else
+                    {
+                        var toolbar = item as CustomToolbar;
+                        if (toolbar != null)
+                        {
+                            Dictionary<string, object> dic = new Dictionary<string, object>();
+                            dic.Add("hotkey", toolbar.Hotkey);
+                            dic.Add("name", toolbar.Name);
+                            dic.Add("tipPosition", toolbar.TipPosition);
+                            dic.Add("tip", toolbar.Tip);
+                            dic.Add("className", toolbar.ClassName);
+                            dic.Add("icon", toolbar.Icon);
+                            dic.Add("click", "function() {\n ClickCustomToolbar('" + toolbar.Name + "') \n}");
+                            bars.Add(dic);
+                        }
+                    }
+                }
+                Options["Toolbar"] = bars;
+            }
+
         }
 
         protected override async Task OnParametersSetAsync()
