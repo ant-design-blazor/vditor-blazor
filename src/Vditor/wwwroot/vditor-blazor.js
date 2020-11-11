@@ -1,5 +1,7 @@
 // This file is to show how a library package may provide JavaScript interop features
 // wrapped in a .NET API
+var vditorEditor = null;
+
 window.vditorBlazor = window.vditorBlazor || {
     // create vditor instance
     createVditor: (domRef, editor, value, options = {}) => {
@@ -36,7 +38,7 @@ window.vditorBlazor = window.vditorBlazor || {
             },
         });
 
-        editorObj = editor
+        vditorEditor = editor
     },
     getValue: (domRef) => {
         return domRef.Vditor.getValue();
@@ -63,14 +65,13 @@ window.vditorBlazor = window.vditorBlazor || {
                 }
             }
         });
+    },
+    clickCustomToolButton: (name) => {
+        vditorEditor.invokeMethodAsync("HandleClickCustomToolButton", name)
     }
 }
 
-var editorObj = null;
 
-var clickCustomToolbar = function (name) {
-    editorObj.invokeMethodAsync("HandleClickCustomToolButton", name)
-}
 
 var convertJsonKey = function (jsonObj) {
     var result = {};

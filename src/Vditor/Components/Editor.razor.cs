@@ -95,9 +95,9 @@ namespace Vditor
             if (Toolbar != null)
             {
                 List<object> bars = new List<object>();
-                foreach(var item in Toolbar.Buttons)
+                foreach (var item in Toolbar.Buttons)
                 {
-                    if(item is string)
+                    if (item is string)
                     {
                         bars.Add(item);
                     }
@@ -113,7 +113,7 @@ namespace Vditor
                             dic.Add("tip", toolbar.Tip);
                             dic.Add("className", toolbar.ClassName);
                             dic.Add("icon", toolbar.Icon);
-                            dic.Add("click", "function() {\n clickCustomToolbar('" + toolbar.Name + "') \n}");
+                            dic.Add("click", "function() {\n vditorBlazor.clickCustomToolButton('" + toolbar.Name + "') \n}");
                             bars.Add(dic);
                         }
                     }
