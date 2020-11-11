@@ -37,10 +37,5 @@ namespace Vditor
         {
             await Js.InvokeVoidAsync("vditorBlazor.destroy", _ref);
         }
-
-        public async Task SetEditor()
-        {
-            await Js.InvokeAsync<string>("setEditor", DotNetObjectReference.Create(this));
-        }
     }
 }

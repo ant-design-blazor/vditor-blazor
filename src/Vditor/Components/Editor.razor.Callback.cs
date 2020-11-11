@@ -16,7 +16,7 @@ namespace Vditor
 
         [Parameter] public EventCallback<string> OnSelect { get; set; }
 
-        [Parameter] public EventCallback<string> OnClickCustomToolbar { get; set; }
+        [Parameter] public EventCallback<string> OnClickCustomToolButton { get; set; }
 
         [JSInvokable]
         public async Task HandleRendered()
@@ -93,11 +93,11 @@ namespace Vditor
         }
 
         [JSInvokable]
-        public void HandleClickCustomToolbar(string value)
+        public void HandleClickCustomToolButton(string value)
         {
-            if (OnClickCustomToolbar.HasDelegate)
+            if (OnClickCustomToolButton.HasDelegate)
             {
-                OnClickCustomToolbar.InvokeAsync(value);
+                OnClickCustomToolButton.InvokeAsync(value);
             }
         }
     }

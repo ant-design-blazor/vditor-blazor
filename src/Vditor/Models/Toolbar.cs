@@ -8,13 +8,13 @@ namespace Vditor.Models
     {
         public Toolbar()
         {
-            Toolbars = new List<object>();
+            Buttons = new List<object>();
         }
 
-        public List<object> Toolbars { get; set; }
+        public List<object> Buttons { get; set; }
     }
 
-    public class CustomToolbar
+    public class CustomToolButton
     {
         public string Hotkey { get; set; }
         public string Name { get; set; }

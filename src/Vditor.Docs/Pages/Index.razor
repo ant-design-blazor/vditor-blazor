@@ -6,7 +6,7 @@
 
 Vditor of blazor.
 
-<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnClickCustomToolbar="OnClickCustomToolbar" />
+<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnClickCustomToolButton="OnClickCustomToolButton" />
 
 <br />
 <Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd" />
@@ -49,9 +49,9 @@ Content:@value
             "insert-after",
             "|"};
 
-        Toolbar.Toolbars.AddRange(keys.ToList());
+        Toolbar.Buttons.AddRange(keys.ToList());
 
-        CustomToolbar toolbar = new CustomToolbar()
+        CustomToolButton toolbar = new CustomToolButton()
         {
             ClassName = "right",
             Hotkey = "⌘-⇧-S",
@@ -61,7 +61,7 @@ Content:@value
             TipPosition = "n"
         };
 
-        Toolbar.Toolbars.Add(toolbar);
+        Toolbar.Buttons.Add(toolbar);
 
         string[] keys2 = {"upload",
             "record",
@@ -71,7 +71,7 @@ Content:@value
             "redo",
             "|",
             "fullscreen"};
-        Toolbar.Toolbars.AddRange(keys2.ToList());
+        Toolbar.Buttons.AddRange(keys2.ToList());
 
         base.OnInitialized();
     }
@@ -87,7 +87,7 @@ Content:@value
         Console.WriteLine("rendererd!");
     }
 
-    void OnClickCustomToolbar(string name)
+    void OnClickCustomToolButton(string name)
     {
         value = value + "自定义按钮name:" + name;
     }

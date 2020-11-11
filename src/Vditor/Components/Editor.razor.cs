@@ -76,7 +76,6 @@ namespace Vditor
             {
                 _afterFirstRender = true;
                 await CreateVditor();
-                await SetEditor();
             }
         }
 
@@ -96,15 +95,15 @@ namespace Vditor
             if (Toolbar != null)
             {
                 List<object> bars = new List<object>();
-                foreach(var item in Toolbar.Toolbars)
+                foreach(var item in Toolbar.Buttons)
                 {
-                    if(item.GetType() == typeof(string))
+                    if(item is string)
                     {
                         bars.Add(item);
                     }
                     else
                     {
-                        var toolbar = item as CustomToolbar;
+                        var toolbar = item as CustomToolButton;
                         if (toolbar != null)
                         {
                             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -114,7 +113,7 @@ namespace Vditor
                             dic.Add("tip", toolbar.Tip);
                             dic.Add("className", toolbar.ClassName);
                             dic.Add("icon", toolbar.Icon);
-                            dic.Add("click", "function() {\n ClickCustomToolbar('" + toolbar.Name + "') \n}");
+                            dic.Add("click", "function() {\n clickCustomToolbar('" + toolbar.Name + "') \n}");
                             bars.Add(dic);
                         }
                     }
