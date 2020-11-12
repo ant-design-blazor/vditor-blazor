@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Vditor.Models;
+using System.Linq;
 
 namespace Vditor
 {
@@ -55,6 +57,9 @@ namespace Vditor
         [Parameter]
         public bool Outline { get; set; }
 
+        [Parameter]
+        public Toolbar Toolbar { get; set; }
+
         private ElementReference _ref;
 
         private bool _editorRendered = false;
@@ -86,6 +91,36 @@ namespace Vditor
             Options["Width"] = int.TryParse(Width, out var w) ? w : (object)Width;
             Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
             Options["Options"] = Outline;
+
+            if (Toolbar != null)
+            {
+                List<object> bars = new List<object>();
+                foreach (var item in Toolbar.Buttons)
+                {
+                    if (item is string)
+                    {
+                        bars.Add(item);
+                    }
+                    else
+                    {
+                        var toolbar = item as CustomToolButton;
+                        if (toolbar != null)
+                        {
+                            Dictionary<string, object> dic = new()
+                            {
+                                { "hotkey", toolbar.Hotkey },
+                                { "name", toolbar.Name },
+                                { "tipPosition", toolbar.TipPosition },
+                                { "tip", toolbar.Tip },
+                                { "className", toolbar.ClassName },
+                                { "icon", toolbar.Icon },
+                            };
+                            bars.Add(dic);
+                        }
+                    }
+                }
+                Options["Toolbar"] = bars;
+            }
         }
 
         protected override async Task OnParametersSetAsync()

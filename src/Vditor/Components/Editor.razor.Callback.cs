@@ -16,6 +16,8 @@ namespace Vditor
 
         [Parameter] public EventCallback<string> OnSelect { get; set; }
 
+        [Parameter] public EventCallback<string> OnToolbarButtonClick { get; set; }
+
         [JSInvokable]
         public async Task HandleRendered()
         {
@@ -87,6 +89,15 @@ namespace Vditor
             if (OnSelect.HasDelegate)
             {
                 OnSelect.InvokeAsync(value);
+            }
+        }
+
+        [JSInvokable]
+        public void HandleToolbarButtonClick(string btnName)
+        {
+            if (OnToolbarButtonClick.HasDelegate)
+            {
+                OnToolbarButtonClick.InvokeAsync(btnName);
             }
         }
     }
