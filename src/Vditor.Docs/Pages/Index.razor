@@ -6,7 +6,7 @@
 
 Vditor of blazor.
 
-<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnClickCustomToolButton="OnClickCustomToolButton" />
+<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnToolbarButtonClick="OnToolbarButtonClick" />
 
 <br />
 <Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd" />
@@ -87,8 +87,8 @@ Content:@value
         Console.WriteLine("rendererd!");
     }
 
-    void OnClickCustomToolButton(string name)
+    void OnToolbarButtonClick(string name)
     {
-        value = value + "自定义按钮name:" + name;
+        value += $"\r\ncustom button {name} was clicked.";
     }
 }

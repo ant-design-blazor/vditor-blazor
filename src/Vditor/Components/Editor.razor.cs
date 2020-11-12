@@ -106,21 +106,21 @@ namespace Vditor
                         var toolbar = item as CustomToolButton;
                         if (toolbar != null)
                         {
-                            Dictionary<string, object> dic = new Dictionary<string, object>();
-                            dic.Add("hotkey", toolbar.Hotkey);
-                            dic.Add("name", toolbar.Name);
-                            dic.Add("tipPosition", toolbar.TipPosition);
-                            dic.Add("tip", toolbar.Tip);
-                            dic.Add("className", toolbar.ClassName);
-                            dic.Add("icon", toolbar.Icon);
-                            dic.Add("click", "function() {\n vditorBlazor.clickCustomToolButton('" + toolbar.Name + "') \n}");
+                            Dictionary<string, object> dic = new()
+                            {
+                                { "hotkey", toolbar.Hotkey },
+                                { "name", toolbar.Name },
+                                { "tipPosition", toolbar.TipPosition },
+                                { "tip", toolbar.Tip },
+                                { "className", toolbar.ClassName },
+                                { "icon", toolbar.Icon },
+                            };
                             bars.Add(dic);
                         }
                     }
                 }
                 Options["Toolbar"] = bars;
             }
-
         }
 
         protected override async Task OnParametersSetAsync()
