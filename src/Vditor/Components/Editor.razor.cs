@@ -60,6 +60,9 @@ namespace Vditor
         [Parameter]
         public Toolbar Toolbar { get; set; }
 
+        [Parameter]
+        public Upload Upload { get; set; }
+
         private ElementReference _ref;
 
         private bool _editorRendered = false;
@@ -91,6 +94,7 @@ namespace Vditor
             Options["Width"] = int.TryParse(Width, out var w) ? w : (object)Width;
             Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
             Options["Options"] = Outline;
+            Options["Upload"] = Upload ?? new Upload();
 
             if (Toolbar != null)
             {
