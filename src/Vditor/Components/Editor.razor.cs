@@ -94,7 +94,11 @@ namespace Vditor
             Options["Width"] = int.TryParse(Width, out var w) ? w : (object)Width;
             Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
             Options["Options"] = Outline;
-            Options["Upload"] = Upload ?? new Upload();
+
+            if (Upload != null)
+            {
+                Options["Upload"] = Upload;
+            }
 
             if (Toolbar != null)
             {
@@ -105,22 +109,17 @@ namespace Vditor
                     {
                         bars.Add(item);
                     }
-                    else
+                    else if (item is CustomToolButton toolbar)
                     {
-                        var toolbar = item as CustomToolButton;
-                        if (toolbar != null)
+                        bars.Add(new Dictionary<string, object>()
                         {
-                            Dictionary<string, object> dic = new()
-                            {
-                                { "hotkey", toolbar.Hotkey },
-                                { "name", toolbar.Name },
-                                { "tipPosition", toolbar.TipPosition },
-                                { "tip", toolbar.Tip },
-                                { "className", toolbar.ClassName },
-                                { "icon", toolbar.Icon },
-                            };
-                            bars.Add(dic);
-                        }
+                            ["hotkey"] = toolbar.Hotkey,
+                            ["name"] = toolbar.Name,
+                            ["tipPosition"] = toolbar.TipPosition,
+                            ["tip"] = toolbar.Tip,
+                            ["className"] = toolbar.ClassName,
+                            ["icon"] = toolbar.Icon,
+                        });
                     }
                 }
                 Options["Toolbar"] = bars;
