@@ -6,7 +6,7 @@
 
 Vditor of blazor.
 
-<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnToolbarButtonClick="OnToolbarButtonClick" />
+<Vditor.Editor @ref="editor" @bind-Value="value" @bind-Html="html" Mode="wysiwyg" Height="500" MinHeight="500" Toolbar="Toolbar" OnToolbarButtonClick="OnToolbarButtonClick" Upload="upload" />
 
 <br />
 <Vditor.Preview Anchor Markdown="@value" OnRendered="Rendererd" />
@@ -24,6 +24,12 @@ Content:@value
 
     Editor editor;
     Toolbar Toolbar = new Toolbar();
+    Upload upload = new Upload() {
+        Url = "api/upload",
+        Max = 2 * 1024 * 1024,
+        Accept = "image/*,*.doc,*.docx",
+        Multiple = false,
+    };
 
     protected override void OnInitialized()
     {

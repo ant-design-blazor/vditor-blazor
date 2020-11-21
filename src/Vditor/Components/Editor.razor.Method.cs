@@ -30,7 +30,7 @@ namespace Vditor
 
         public async Task InsertValue(string value, bool render = true)
         {
-            await Js.InvokeVoidAsync("vditorBlazor.setValue", _ref, value, render);
+            await Js.InvokeVoidAsync("vditorBlazor.insertValue", _ref, value, render);
         }
 
         public async Task Destroy()

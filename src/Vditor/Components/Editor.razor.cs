@@ -60,6 +60,9 @@ namespace Vditor
         [Parameter]
         public Toolbar Toolbar { get; set; }
 
+        [Parameter]
+        public Upload Upload { get; set; }
+
         private ElementReference _ref;
 
         private bool _editorRendered = false;
@@ -92,6 +95,11 @@ namespace Vditor
             Options["MinHeight"] = int.TryParse(MinHeight, out var m) ? m : (object)MinHeight;
             Options["Options"] = Outline;
 
+            if (Upload != null)
+            {
+                Options["Upload"] = Upload;
+            }
+
             if (Toolbar != null)
             {
                 List<object> bars = new List<object>();
@@ -101,22 +109,17 @@ namespace Vditor
                     {
                         bars.Add(item);
                     }
-                    else
+                    else if (item is CustomToolButton toolbar)
                     {
-                        var toolbar = item as CustomToolButton;
-                        if (toolbar != null)
+                        bars.Add(new Dictionary<string, object>()
                         {
-                            Dictionary<string, object> dic = new()
-                            {
-                                { "hotkey", toolbar.Hotkey },
-                                { "name", toolbar.Name },
-                                { "tipPosition", toolbar.TipPosition },
-                                { "tip", toolbar.Tip },
-                                { "className", toolbar.ClassName },
-                                { "icon", toolbar.Icon },
-                            };
-                            bars.Add(dic);
-                        }
+                            ["hotkey"] = toolbar.Hotkey,
+                            ["name"] = toolbar.Name,
+                            ["tipPosition"] = toolbar.TipPosition,
+                            ["tip"] = toolbar.Tip,
+                            ["className"] = toolbar.ClassName,
+                            ["icon"] = toolbar.Icon,
+                        });
                     }
                 }
                 Options["Toolbar"] = bars;
