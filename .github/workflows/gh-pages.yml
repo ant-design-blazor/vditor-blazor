@@ -35,7 +35,7 @@ jobs:
           cd ./src/Vditor.Docs.WebAssembly/wwwroot
           cp -rf gh-pages/* gh-pages/.nojekyll gh-pages/.spa ./
           cd ../../../
-          dotnet build
+          dotnet build -c Release
           dotnet publish -c Release -f net5 -o cargo
 
       - name: Deploy 🚀
