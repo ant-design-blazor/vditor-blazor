@@ -36,7 +36,7 @@ jobs:
           cp -rf gh-pages/* gh-pages/.nojekyll gh-pages/.spa ./
           cd ../../../
           dotnet build
-          dotnet publish -c Release -o cargo
+          dotnet publish -c Release -f net5 -o cargo
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
