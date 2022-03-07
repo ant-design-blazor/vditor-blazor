@@ -19,6 +19,7 @@
         public string Accept { get; set; }
         public bool Multiple { get; set; } = true;
         public string FieldName { get; set; } = "file[]";
-        public string ExtraData { get; set; } = "";
+        public Dictionary<string, string> ExtraData { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
     }
 }
