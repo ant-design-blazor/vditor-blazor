@@ -1,4 +1,6 @@
-﻿namespace Vditor.Models
+using System.Collections.Generic;
+
+namespace Vditor.Models
 {
     /// <summary>
     /// 普通参数在此定义
